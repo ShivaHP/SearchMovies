@@ -311,10 +311,12 @@ class MovieDetailScreen extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          Text(
-            title,
-            style: textStyle.copyWith(
-                color: Colors.white60, fontWeight: FontWeight.w400),
+          Flexible(
+            child: Text(
+              title,
+              style: textStyle.copyWith(
+                  color: Colors.white60, fontWeight: FontWeight.w400),
+            ),
           )
         ],
       ),

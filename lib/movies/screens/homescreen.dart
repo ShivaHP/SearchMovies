@@ -12,6 +12,7 @@ import 'package:uneva_assignment/movies/screens/moviedetail.dart';
 const double buttonsize=60;
 
 class HomeScreen extends StatefulWidget {
+  
   HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,8 +20,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+ late TextEditingController searchcontroller;
+  
   List<MovieModel> movieslist = [];
-  String movietitle = "Avengers";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    searchcontroller=TextEditingController();
+    searchcontroller.text="Avengers";
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    searchcontroller.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,12 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: TextFormField(
-              onFieldSubmitted: (String? text) {
+              controller: searchcontroller,
+              onEditingComplete: (){
                 setState(() {
-                  movietitle = text??"";
+                  
                 });
               },
-              initialValue: movietitle,
               style: textStyle.copyWith(color: Colors.white, fontSize: 16),
               decoration: InputDecoration(
                 fillColor: kwhite.withOpacity(0.5),
@@ -48,7 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 25,
                     height: 25,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                  setState(() {
+                    
+                  });
+
+                   
+                  },
                 ),
                 filled: true,
                 hintText: "Search for movies / shows",
@@ -59,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: 25,
                     height: 25,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                  searchcontroller.clear();
+                  },
                 ),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -78,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         keyboardDismissBehavior:ScrollViewKeyboardDismissBehavior.onDrag,
         child: FutureBuilder<List<MovieModel>>(
-            future: MovieGetterModel().moviegetter(movietitle),
+            future: MovieGetterModel().moviegetter(searchcontroller.text.toLowerCase()),
             builder: (context, AsyncSnapshot<List<MovieModel>> snapshot) {
               if (snapshot.hasError) {
                 return Text(
